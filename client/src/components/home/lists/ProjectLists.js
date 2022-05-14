@@ -6,8 +6,14 @@ export default function ProjectLists({ props }) {
   const {
     gap,
     cardFontSize,
-    cardWidth
+    cardWidth,
+    taskFontSize
   } = props
+  const listCardProps = {
+    cardFontSize: cardFontSize,
+    cardWidth: cardWidth,
+    taskFontSize: taskFontSize
+  }
 
   const lists = [
     {
@@ -33,22 +39,13 @@ export default function ProjectLists({ props }) {
       {lists.map((list, index) => {
         return index !== lists.length - 1 ? (
           <ListCard key={list._id}
-            props={{
-              cardFontSize: cardFontSize,
-              cardWidth: cardWidth
-            }}
+            props={listCardProps}
           />
         ):
         (
           <React.Fragment key={list._id} >
-            <ListCard props={{
-              cardFontSize: cardFontSize,
-              cardWidth: cardWidth
-            }} />
-            <CreateListCard props={{
-              cardFontSize: cardFontSize,
-              cardWidth: cardWidth
-            }} />
+            <ListCard props={listCardProps} />
+            <CreateListCard props={listCardProps} />
           </React.Fragment>
         )
       })}

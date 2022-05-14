@@ -5,7 +5,8 @@ import Header from "../../Header"
 import ProjectLists from "../lists/ProjectLists"
 
 let isPhone, pageTitleFontSize, cardFontSize,
-gap, cardTextMarginLeft, cardWidth
+gap, cardTextMarginLeft, cardWidth,
+taskFontSize
 
 export default function Project() {
   const { width, height } = useWindowDimensions()
@@ -22,6 +23,14 @@ export default function Project() {
   cardWidth = isPhone ? "15rem":"19.25rem"
   gap = isPhone ? "3px":"10px"
   cardTextMarginLeft = isPhone ? "5px":"10px"
+  taskFontSize = isPhone ? ".9rem":"1rem"
+
+  const projectListsProps = {
+    gap: gap,
+    cardFontSize: cardFontSize,
+    cardWidth: cardWidth,
+    taskFontSize: taskFontSize
+  }
 
   return (
     <div style={{
@@ -35,11 +44,7 @@ export default function Project() {
         }}>
           {project.title}
         </p>
-        <ProjectLists props={{
-          gap: gap,
-          cardFontSize: cardFontSize,
-          cardWidth: cardWidth
-        }} />
+        <ProjectLists props={projectListsProps} />
       </div>
     </div>
   )

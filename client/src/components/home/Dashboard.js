@@ -17,6 +17,13 @@ export default function Dashboard() {
   cardTextMarginLeft = isPhone ? "5px":"10px"
   numOfColumns = isPhone ? "2":"3"
 
+  const userProjectsProps = {
+    fontSize: cardFontSize,
+    gap: gap,
+    cardTextMarginLeft,
+    numOfColumns
+  }
+
   return (
     <div style={{
       backgroundColor: "#f5f5f7",
@@ -31,12 +38,7 @@ export default function Dashboard() {
             fontSize: pageTitleFontSize
           }}
           >Dashboard</p>
-          <UserProjects props={{
-            fontSize: cardFontSize,
-            gap: gap,
-            cardTextMarginLeft,
-            numOfColumns
-          }} />
+          <UserProjects props={userProjectsProps} />
         </div>
       </div>
     </div>

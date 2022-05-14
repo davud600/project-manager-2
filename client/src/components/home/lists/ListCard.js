@@ -1,9 +1,14 @@
+import ListTasks from "../tasks/ListTasks"
 
 export default function ListCard({ props }) {
   const {
     cardFontSize,
-    cardWidth
+    cardWidth,
+    taskFontSize
   } = props
+  const listTasksProps = {
+    taskFontSize: taskFontSize
+  }
 
   const CARD_COLOR = "grey"
 
@@ -11,6 +16,7 @@ export default function ListCard({ props }) {
     <div className="list-card"
       style={{
         minWidth: cardWidth,
+        width: cardWidth,
         backgroundColor: CARD_COLOR,
       }}
     >
@@ -19,6 +25,7 @@ export default function ListCard({ props }) {
       }}>
         ListCard
       </p>
+      <ListTasks props={listTasksProps} />
     </div>
   )
 }
