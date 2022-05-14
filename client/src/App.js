@@ -5,7 +5,7 @@ import Dashboard from "./components/home/Dashboard"
 import Account from "./components/user/Account"
 import Login from "./components/user/Login"
 import Signup from "./components/user/Signup"
-import Project from "./components/home/projects/Project"
+import Project from "./components/home/Project"
 
 export default function App() {
   return (

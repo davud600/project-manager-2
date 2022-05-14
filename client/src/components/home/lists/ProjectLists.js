@@ -1,6 +1,21 @@
-import React from "react"
+import React, { useState, useRef } from "react"
 import ListCard from "./ListCard"
-import CreateListCard from "./CreateListCard"
+import CreateDocument from "../../CreateDocument"
+
+const lists = [
+  {
+    _id: "00123456789",
+    title: "project kill john lennon list 1",
+    project_id: "123456789"
+  },
+  {
+    _id: "00123456788",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
+]
+
+const CARD_COLOR = "grey"
 
 export default function ProjectLists({ props }) {
   const {
@@ -9,24 +24,51 @@ export default function ProjectLists({ props }) {
     cardWidth,
     taskFontSize
   } = props
+
+  const [ isCreatingList, setIsCreatingList ]= useState(false)
+  const title = useRef()
+
+  const addList = (e = null) => {
+    if (e !== null && e.key !== "Enter")
+      return
+    
+    setIsCreatingList(false)
+    // Add list
+  }
+
   const listCardProps = {
     cardFontSize: cardFontSize,
     cardWidth: cardWidth,
     taskFontSize: taskFontSize
   }
-
-  const lists = [
-    {
-      _id: "00123456789",
-      title: "project kill john lennon list 1",
-      project_id: "123456789"
+  const createCardProps = {
+    addDocument: addList,
+    isCreatingDocument: isCreatingList,
+    setIsCreatingDocument: setIsCreatingList,
+    title: title,
+    cardClassName: "list-card editable-title",
+    cardStyle: {
+      minWidth: cardWidth,
+      backgroundColor: CARD_COLOR,
+      opacity: "0.6"
     },
-    {
-      _id: "00123456788",
-      title: "project kill john lennon list 2",
-      project_id: "123456789"
-    }
-  ]
+    textClassName: "m-2 fw-bold",
+    textStyle: {
+      fontSize: cardFontSize,
+      color: "white"
+    },
+    cardEditingClassName: "list-card d-flex align-items-center flex-column",
+    cardEditingStyle: {
+      minWidth: cardWidth,
+      backgroundColor: CARD_COLOR,
+      opacity: "0.6",
+    },
+    inputStyle: {
+      fontSize: cardFontSize,
+      margin: "1rem"
+    },
+    documentType: "list"
+  }
 
   return (
     <div className="d-flex flex-row mt-2 ms-2 me-2"
@@ -45,7 +87,7 @@ export default function ProjectLists({ props }) {
         (
           <React.Fragment key={list._id} >
             <ListCard props={listCardProps} />
-            <CreateListCard props={listCardProps} />
+            <CreateDocument props={createCardProps} />
           </React.Fragment>
         )
       })}
