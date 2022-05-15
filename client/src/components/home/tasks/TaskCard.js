@@ -18,10 +18,13 @@ export default function TaskCard({ props }) {
     // Edit title
   }
 
+  const deleteTask = () => {
+  }
+
   const titleProps = {
     isEditingTitle: isEditingTitle,
     setIsEditingTitle: setIsEditingTitle,
-    titleClassName: "m-2 editable-title",
+    titleClassName: "m-2 editable-title d-flex justify-content-between",
     titleStyle: {
       fontSize: taskFontSize
     },
@@ -34,7 +37,8 @@ export default function TaskCard({ props }) {
       fontSize: taskFontSize,
       backgroundColor: "white",
       opacity: "0.5"
-    }
+    },
+    deleteDocument: deleteTask
   }
 
   return (

@@ -58,7 +58,6 @@ code {
 /* List card */
 .list-card {
   border-radius: 4px;
-  cursor: pointer;
 }
 .list-card:hover {
   /* opacity: 0.9; */

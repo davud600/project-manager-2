@@ -8,9 +8,6 @@ export default function ListCard({ props }) {
     cardWidth,
     taskFontSize
   } = props
-  const listTasksProps = {
-    taskFontSize: taskFontSize
-  }
   const CARD_COLOR = "grey"
 
   const [ isEditingTitle, setIsEditingTitle ] = useState(false)
@@ -24,12 +21,19 @@ export default function ListCard({ props }) {
     // Edit title
   }
 
+  const deleteList = () => {
+  }
+
+  const listTasksProps = {
+    taskFontSize: taskFontSize
+  }
   const titleProps = {
     isEditingTitle: isEditingTitle,
     setIsEditingTitle: setIsEditingTitle,
-    titleClassName: "m-2 fw-bold editable-title",
+    titleClassName: "m-2 fw-bold editable-title d-flex justify-content-between",
     titleStyle: {
-      fontSize: cardFontSize
+      fontSize: cardFontSize,
+      cursor: "pointer"
     },
     title: "ListCard",
     newTitle: newTitle,
@@ -40,7 +44,8 @@ export default function ListCard({ props }) {
       fontSize: cardFontSize,
       backgroundColor: "white",
       opacity: "0.25",
-    }
+    },
+    deleteDocument: deleteList
   }
 
   return (

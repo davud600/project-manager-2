@@ -39,6 +39,9 @@ export default function Project() {
     // Edit title
   }
 
+  const deleteProject = () => {
+  }
+
   const projectListsProps = {
     gap: gap,
     cardFontSize: cardFontSize,
@@ -48,7 +51,7 @@ export default function Project() {
   const titleProps = {
     isEditingTitle: isEditingTitle,
     setIsEditingTitle: setIsEditingTitle,
-    titleClassName: "mt-4 mb-2 text-center editable-title",
+    titleClassName: "mt-4 mb-2 text-center editable-title d-flex justify-content-between",
     titleStyle: {
       fontSize: pageTitleFontSize,
       cursor: "pointer",
@@ -67,7 +70,8 @@ export default function Project() {
       opacity: "0.5",
       minWidth: "fit-content"
     },
-    centered: true
+    centered: true,
+    deleteDocument: deleteProject
   }
 
   return (
@@ -78,21 +82,7 @@ export default function Project() {
       <Header />
       <div className="d-flex flex-column">
         <div className="d-flex flex-row justify-content-center">
-          <div style={{
-            marginLeft: "5rem"
-          }}>
-            <Title props={titleProps}></Title>
-          </div>
-          <div style={{
-            marginTop: "2rem"
-          }}>
-            <button className="btn btn-danger"
-              style={{
-                paddingLeft: "1rem",
-                paddingRight: "1rem"
-              }}
-            >Delete</button>
-          </div>
+          <Title props={titleProps}></Title>
         </div>
         <ProjectLists props={projectListsProps} />
       </div>

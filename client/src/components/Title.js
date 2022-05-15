@@ -13,7 +13,8 @@ export default function Title({ props }) {
     editTitle,
     inputClassName,
     inputStyle,
-    centered = false
+    centered = false,
+    deleteDocument
   } = props
 
   const titleRef = useRef()
@@ -21,11 +22,22 @@ export default function Title({ props }) {
 
   return (
     <div className={centered ? "text-center":""}>
-      {!isEditingTitle ? <p className={titleClassName}
+      {!isEditingTitle ?
+      <p className={titleClassName}
         style={titleStyle}
         onClick={() => setIsEditingTitle(true)}
       >
         {title}
+        <button className="btn p-0"
+          style={{
+            marginTop: ".275rem",
+            width: "1rem",
+            height: "1rem",
+            backgroundColor: "#bfafae",
+            opacity: "0.5"
+          }}
+          onClick={deleteDocument}
+        ></button>
       </p>:
       <input className={inputClassName}
         style={inputStyle}

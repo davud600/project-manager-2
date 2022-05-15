@@ -13,36 +13,6 @@ const lists = [
     title: "project kill john lennon list 2",
     project_id: "123456789"
   }
-  ,
-  {
-    _id: "00123456787",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
-  ,
-  {
-    _id: "00123456786",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
-  ,
-  {
-    _id: "00123456785",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
-  ,
-  {
-    _id: "00123456784",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
-  ,
-  {
-    _id: "00123456783",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
 ]
 
 const CARD_COLOR = "grey"
@@ -80,7 +50,8 @@ export default function ProjectLists({ props }) {
     cardStyle: {
       minWidth: cardWidth,
       backgroundColor: CARD_COLOR,
-      opacity: "0.6"
+      opacity: "0.6",
+      cursor: "pointer"
     },
     textClassName: "m-2",
     textStyle: {
