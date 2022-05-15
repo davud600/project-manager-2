@@ -15,7 +15,7 @@ const tasks = [
   }
 ]
 
-const CARD_COLOR = "black"
+const CARD_COLOR = "#ababab"
 
 export default function ListTasks({ props }) {
   const {
@@ -42,7 +42,7 @@ export default function ListTasks({ props }) {
     setIsCreatingDocument: setIsCreatingTask,
     title: title,
 
-    cardClassName: "task-card editable-title",
+    cardClassName: "task-card editable-title mb-2 me-1",
     cardStyle: {
       backgroundColor: CARD_COLOR,
       opacity: "0.6"
@@ -52,7 +52,7 @@ export default function ListTasks({ props }) {
       fontSize: taskFontSize,
       color: "white"
     },
-    cardEditingClassName: "pb-3 task-card d-flex align-items-center flex-column",
+    cardEditingClassName: "me-1 pb-3 mb-2 task-card d-flex align-items-center flex-column",
     cardEditingStyle: {
       backgroundColor: CARD_COLOR,
       opacity: "0.6",
@@ -65,9 +65,11 @@ export default function ListTasks({ props }) {
   }
   
   return (
-    <div className="d-flex flex-column mt-4 ms-2 me-2"
+    <div className="d-flex flex-column"
       style={{
-        gap: "0.5rem"
+        gap: "0.5rem",
+        overflow: "scroll",
+        maxHeight: "23rem"
       }}
     >
       {tasks.map((task, index) => {

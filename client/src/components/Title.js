@@ -1,3 +1,5 @@
+import { useRef } from "react"
+import { useOutsideAlerter } from "../hooks/OutsideAlerter"
 
 export default function Title({ props }) {
   const {
@@ -13,6 +15,9 @@ export default function Title({ props }) {
     inputStyle,
     centered = false
   } = props
+
+  const titleRef = useRef()
+  useOutsideAlerter(titleRef, setIsEditingTitle, false)
 
   return (
     <div className={centered ? "text-center":""}>
@@ -30,6 +35,7 @@ export default function Title({ props }) {
           setNewTitle(e.target.value)
         }}
         autoFocus={true}
+        ref={titleRef}
       />}
     </div>
   )

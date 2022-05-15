@@ -12,6 +12,38 @@ code {
     monospace;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  padding: 10rem;
+  left: 10rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 3px;
+  left: 10rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #c3c3c3;
+  border-radius: 3px;
+  left: 10rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+  border-radius: 3px;
+  left: 10rem;
+}
+
+::-webkit-scrollbar:horizontal {
+  display: none;
+}
+
 /* Project card */
 .project-card {
   border-radius: 5px;

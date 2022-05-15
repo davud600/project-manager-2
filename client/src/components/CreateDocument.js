@@ -1,3 +1,5 @@
+import { useRef } from "react"
+import { useOutsideAlerter } from "../hooks/OutsideAlerter"
 
 export default function CreateDocument({ props }) {
   const {
@@ -19,6 +21,9 @@ export default function CreateDocument({ props }) {
     documentType
   } = props
 
+  const cardRef = useRef()
+  useOutsideAlerter(cardRef, setIsCreatingDocument, false)
+
   return !isCreatingDocument ? (
     <div className={cardClassName}
       style={cardStyle}
@@ -34,6 +39,7 @@ export default function CreateDocument({ props }) {
   (
     <div className={cardEditingClassName}
       style={cardEditingStyle}
+      ref={cardRef}
     >
       <input className="add-item-text-area" ref={title}
         style={inputStyle}

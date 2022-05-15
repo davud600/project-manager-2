@@ -38,7 +38,7 @@ export default function TaskCard({ props }) {
   }
 
   return (
-    <div className="task-card"
+    <div className="task-card me-1"
       style={{
         backgroundColor: CARD_COLOR,
         wordWrap: "break-word"

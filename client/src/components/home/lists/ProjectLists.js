@@ -13,6 +13,36 @@ const lists = [
     title: "project kill john lennon list 2",
     project_id: "123456789"
   }
+  ,
+  {
+    _id: "00123456787",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
+  ,
+  {
+    _id: "00123456786",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
+  ,
+  {
+    _id: "00123456785",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
+  ,
+  {
+    _id: "00123456784",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
+  ,
+  {
+    _id: "00123456783",
+    title: "project kill john lennon list 2",
+    project_id: "123456789"
+  }
 ]
 
 const CARD_COLOR = "grey"
@@ -52,7 +82,7 @@ export default function ProjectLists({ props }) {
       backgroundColor: CARD_COLOR,
       opacity: "0.6"
     },
-    textClassName: "m-2 fw-bold",
+    textClassName: "m-2",
     textStyle: {
       fontSize: cardFontSize,
       color: "white"
@@ -71,7 +101,7 @@ export default function ProjectLists({ props }) {
   }
 
   return (
-    <div className="d-flex flex-row mt-2 ms-2 me-2"
+    <div className="d-flex flex-row mt-2 ps-2 pe-2"
       style={{
         gap: gap,
         overflow: "auto",

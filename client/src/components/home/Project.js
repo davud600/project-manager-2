@@ -9,6 +9,8 @@ let isPhone, pageTitleFontSize, cardFontSize,
 gap, cardTextMarginLeft, cardWidth,
 taskFontSize
 
+const BACKGROUND_COLOR = "#f5f5f7"
+
 export default function Project() {
   const { width, height } = useWindowDimensions()
   const [ searchParams ] = useSearchParams()
@@ -49,7 +51,10 @@ export default function Project() {
     titleClassName: "mt-4 mb-2 text-center editable-title",
     titleStyle: {
       fontSize: pageTitleFontSize,
-      cursor: "pointer"
+      cursor: "pointer",
+      backgroundColor: BACKGROUND_COLOR,
+      minWidth: "fit-content",
+      padding: "0 6.25rem"
     },
     title: project.title,
     newTitle: newTitle,
@@ -58,20 +63,37 @@ export default function Project() {
     inputClassName: "mb-2 mt-4 p-0 text-center add-item-text-area",
     inputStyle: {
       fontSize: pageTitleFontSize,
-      backgroundColor: "white",
-      opacity: "0.5"
+      backgroundColor: BACKGROUND_COLOR,
+      opacity: "0.5",
+      minWidth: "fit-content"
     },
     centered: true
   }
 
   return (
     <div style={{
-      backgroundColor: "#f5f5f7",
+      backgroundColor: BACKGROUND_COLOR,
       height: height
     }}>
       <Header />
       <div className="d-flex flex-column">
-        <Title props={titleProps} />
+        <div className="d-flex flex-row justify-content-center">
+          <div style={{
+            marginLeft: "5rem"
+          }}>
+            <Title props={titleProps}></Title>
+          </div>
+          <div style={{
+            marginTop: "2rem"
+          }}>
+            <button className="btn btn-danger"
+              style={{
+                paddingLeft: "1rem",
+                paddingRight: "1rem"
+              }}
+            >Delete</button>
+          </div>
+        </div>
         <ProjectLists props={projectListsProps} />
       </div>
     </div>
