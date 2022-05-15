@@ -1,21 +1,17 @@
+import { useNavigate } from "react-router-dom"
 import { Form, Button } from "react-bootstrap"
 import { useWindowDimensions } from "../../hooks/WindowDimensions"
-import { useColors } from "../../hooks/Colortheme"
 
 let isPhone, contentWidth
 
 export default function Login() {
   const { width, height } = useWindowDimensions()
-  const {
-    color3,
-    color4,
-    color5
-  } = useColors()
+  const navigate = useNavigate()
 
-  const BACKGROUND_COLOR = color3
-  const INPUT_BOX_COLOR = color5
-  const MAIN_TEXT_COLOR = color4
-  const BUTTON_COLOR = color4
+  const BACKGROUND_COLOR = "#f5f5f7"
+  const INPUT_BOX_COLOR = "white"
+  const MAIN_TEXT_COLOR = "black"
+  const BUTTON_COLOR = "blue"
   
   isPhone = height / width >= 16 / 16
   contentWidth = isPhone ? "75%":"60%"
@@ -35,8 +31,8 @@ export default function Login() {
           <Form.Control type="username" placeholder="Enter Username"
             style={{
               backgroundColor: INPUT_BOX_COLOR,
-              color: "white",
-              border: "none"
+              color: "black",
+              // border: "none"
             }}
           />
         </Form.Group>
@@ -46,8 +42,8 @@ export default function Login() {
           <Form.Control type="password" placeholder="Password"
             style={{
               backgroundColor: INPUT_BOX_COLOR,
-              color: "white",
-              border: "none"
+              color: "black",
+              // border: "none"
             }}
           />
         </Form.Group>
@@ -61,6 +57,13 @@ export default function Login() {
         }}>
           Submit
         </Button>
+        <Form.Label className="ms-4">Don't have an account?</Form.Label>
+        <a className="ms-3 p-0 btn-link"
+          style={{
+            cursor: "pointer"
+          }}
+          onClick={() => navigate('/signup')}
+        >Sign Up</a>
       </Form>
     </div>
   )
