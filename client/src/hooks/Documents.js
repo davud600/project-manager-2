@@ -76,6 +76,17 @@ export default function DocumentsProvider({ children }) {
       }
     })
   }
+
+  const deleteProject = async (project_id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await ProjectsServices.deleteProject(project_id)
+        resolve("Edited project info!")
+      } catch (e) {
+        reject("Could not edit project info!")
+      }
+    })
+  }
   
   const value = {
     userProjects,
@@ -84,7 +95,8 @@ export default function DocumentsProvider({ children }) {
 
     currentProject,
     fetchProject,
-    updateProject
+    updateProject,
+    deleteProject
   }
   
   return (

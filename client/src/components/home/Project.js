@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { useWindowDimensions } from "../../hooks/WindowDimensions"
 import Header from "../Header"
 import ProjectLists from "./lists/ProjectLists"
@@ -7,26 +7,26 @@ import Title from "../Title"
 import { useDocuments } from "../../hooks/Documents"
 
 let isPhone, pageTitleFontSize, cardFontSize,
-gap, cardTextMarginLeft, cardWidth,
-taskFontSize
+gap, cardWidth, taskFontSize
 
 const BACKGROUND_COLOR = "#f5f5f7"
 
 export default function Project() {
   const { width, height } = useWindowDimensions()
   const [ searchParams ] = useSearchParams()
+  const navigate = useNavigate()
 
   isPhone = height / width >= 16 / 16
   pageTitleFontSize = isPhone ? "1.5rem":"2rem"
   cardFontSize = isPhone ? "1rem":"1.25rem"
   cardWidth = isPhone ? "15rem":"19.25rem"
   gap = isPhone ? "3px":"10px"
-  cardTextMarginLeft = isPhone ? "5px":"10px"
   taskFontSize = isPhone ? ".9rem":"1rem"
 
   const { currentProject,
     fetchProject,
-    updateProject
+    updateProject,
+    deleteProject
   } = useDocuments()
   
   const [ message, setMessage ] = useState("")
@@ -53,13 +53,21 @@ export default function Project() {
         title: newTitle
       }))
 
-      await fetchProject()
+      await fetchProject(searchParams.get("project_id"))
     } catch (e) {
       setMessage(e)
     }
   }
 
-  const deleteProject = () => {
+  const removeProject = async () => {
+    // Delete document
+    try {
+      setMessage(await deleteProject(searchParams.get("project_id")))
+
+      navigate("/dashboard")
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const projectListsProps = {
@@ -91,7 +99,7 @@ export default function Project() {
       minWidth: "fit-content"
     },
     centered: true,
-    deleteDocument: deleteProject
+    deleteDocument: removeProject
   }
 
   return (
