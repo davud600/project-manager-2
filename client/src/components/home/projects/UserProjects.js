@@ -1,21 +1,7 @@
-import React, { useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import ProjectCard from "./ProjectCard"
 import CreateDocument from "../../CreateDocument"
-
-const projects = [
-  {
-    _id: "123456789",
-    title: "project kill john lennon"
-  },
-  {
-    _id: "123456788",
-    title: "kill the queesdfsdfn"
-  },
-  {
-    _id: "123456787",
-    title: "kill the queens"
-  }
-]
+import { useDocuments } from "../../../hooks/Documents"
 
 const cardColor = "#5c5c5d"
 
@@ -27,15 +13,39 @@ export default function UserProjects({ props }) {
     numOfColumns
   } = props
 
+  const { userProjects,
+    fetchProjects,
+    createProject
+  } = useDocuments()
+
+  const [ message, setMessage ] = useState("")
   const [ isCreatingProject, setIsCreatingProject ] = useState(false)
   const title = useRef()
+  console.log(message)
 
-  const addProject = (e = null) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProjects()
+    }
+
+    fetchData()
+  }, [])
+
+  const addProject = async (e = null) => {
     if (e !== null && e.key !== "Enter")
       return
     
     setIsCreatingProject(false)
-    // Add project
+    // Create project
+    try {
+      setMessage(await createProject({
+        title: title.current.value
+      }))
+
+      await fetchProjects()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const projectCardProps = {
@@ -79,8 +89,8 @@ export default function UserProjects({ props }) {
       gap: gap,
       gridTemplateColumns: `repeat(${numOfColumns}, 1fr)`
     }}>
-      {projects.map((project, index) => {
-        return index !== projects.length - 1 ? (
+      {userProjects.map((project, index) => {
+        return index !== userProjects.length - 1 ? (
           <ProjectCard key={project._id}
             props={{...projectCardProps, project: project}}
           />
@@ -92,6 +102,9 @@ export default function UserProjects({ props }) {
           </React.Fragment>
         )
       })}
+      {userProjects.length === 0 ?
+      <CreateDocument props={createCardProps} />
+      :<></>}
     </div>
   )
 }

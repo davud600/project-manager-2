@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useWindowDimensions } from "../../hooks/WindowDimensions"
 import Header from "../Header"
 import ProjectLists from "./lists/ProjectLists"
 import Title from "../Title"
+import { useDocuments } from "../../hooks/Documents"
 
 let isPhone, pageTitleFontSize, cardFontSize,
 gap, cardTextMarginLeft, cardWidth,
@@ -23,20 +24,39 @@ export default function Project() {
   cardTextMarginLeft = isPhone ? "5px":"10px"
   taskFontSize = isPhone ? ".9rem":"1rem"
 
-  const [ project, setProject ] = useState({
-    _id: searchParams.get("project_id"),
-    title: "project title"
-  })
+  const { currentProject,
+    fetchProject,
+    updateProject
+  } = useDocuments()
   
+  const [ message, setMessage ] = useState("")
   const [ isEditingTitle, setIsEditingTitle ] = useState(false)
-  const [ newTitle, setNewTitle ] = useState("project title")
+  const [ newTitle, setNewTitle ] = useState("")
+  console.log(message)
 
-  const editTitle = (e) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProject(searchParams.get("project_id"))
+    }
+    
+    fetchData()
+  }, [])
+
+  const editTitle = async (e) => {
     if (e.key !== "Enter")
       return
     
     setIsEditingTitle(false)
     // Edit title
+    try {
+      setMessage(await updateProject({
+        title: newTitle
+      }))
+
+      await fetchProject()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const deleteProject = () => {
@@ -59,7 +79,7 @@ export default function Project() {
       minWidth: "fit-content",
       padding: "0 6.25rem"
     },
-    title: project.title,
+    title: currentProject.title,
     newTitle: newTitle,
     setNewTitle: setNewTitle,
     editTitle: editTitle,

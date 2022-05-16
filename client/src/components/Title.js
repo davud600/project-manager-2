@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useOutsideAlerter } from "../hooks/OutsideAlerter"
 
 export default function Title({ props }) {
@@ -18,7 +18,11 @@ export default function Title({ props }) {
   } = props
 
   const titleRef = useRef()
-  useOutsideAlerter(titleRef, setIsEditingTitle, false)
+  useOutsideAlerter(titleRef, setIsEditingTitle, false, setNewTitle, title)
+
+  useEffect(() => {
+    setNewTitle(title)
+  }, [title])
 
   return (
     <div className={centered ? "text-center":""}>
