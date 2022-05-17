@@ -7,12 +7,12 @@ import Login from "./components/user/Login"
 import Signup from "./components/user/Signup"
 import Project from "./components/home/Project"
 import AuthProvider from "./hooks/Auth"
-import DocumentsProvider from "./hooks/Documents"
+import ProjectsProvider from "./hooks/documents/ProjectsProvider"
 
 export default function App() {
   return (
     <AuthProvider>
-      <DocumentsProvider>
+      <ProjectsProvider>
         <Routes>
           <Route path="" element={<Home />} />
           <Route path="/account" element={<Account />} />
@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/project" element={<Project />} />
         </Routes>
-      </DocumentsProvider>
+      </ProjectsProvider>
     </AuthProvider>
   )
 }

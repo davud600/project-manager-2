@@ -1,27 +1,53 @@
 import { useState } from "react"
+import { useLists } from "../../../hooks/documents/ListsProvider"
+import TasksProvider from "../../../hooks/documents/TasksProvider"
 import ListTasks from "../tasks/ListTasks"
 import Title from "../../Title"
 
-export default function ListCard({ props }) {
+export default function ListCard({ props, list }) {
   const {
     cardFontSize,
     cardWidth,
-    taskFontSize
+    taskFontSize,
+    refreshLists
   } = props
   const CARD_COLOR = "grey"
 
-  const [ isEditingTitle, setIsEditingTitle ] = useState(false)
-  const [ newTitle, setNewTitle ] = useState("ListCard")
+  const {
+    updateList,
+    deleteList
+  } = useLists()
 
-  const editTitle = (e) => {
+  const [ message, setMessage ] = useState("")
+  const [ isEditingTitle, setIsEditingTitle ] = useState(false)
+  const [ newTitle, setNewTitle ] = useState("")
+
+  const editTitle = async (e) => {
     if (e.key !== "Enter")
       return
     
     setIsEditingTitle(false)
     // Edit title
+    try {
+      setMessage(await updateList({
+        title: newTitle
+      }, list._id))
+
+      await refreshLists()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
-  const deleteList = () => {
+  const removeList = async () => {
+    // Delete document
+    try {
+      setMessage(await deleteList(list._id))
+
+      await refreshLists()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const listTasksProps = {
@@ -35,7 +61,7 @@ export default function ListCard({ props }) {
       fontSize: cardFontSize,
       cursor: "pointer"
     },
-    title: "ListCard",
+    title: list.title,
     newTitle: newTitle,
     setNewTitle: setNewTitle,
     editTitle: editTitle,
@@ -45,7 +71,7 @@ export default function ListCard({ props }) {
       backgroundColor: "white",
       opacity: "0.25",
     },
-    deleteDocument: deleteList
+    deleteDocument: removeList
   }
 
   return (
@@ -63,7 +89,12 @@ export default function ListCard({ props }) {
       }}>
         <Title props={titleProps} />
       </div>
-      <ListTasks props={listTasksProps} />
+      
+      <TasksProvider>
+        <ListTasks props={listTasksProps}
+          list_id={list._id}
+        />
+      </TasksProvider>
     </div>
   )
 }

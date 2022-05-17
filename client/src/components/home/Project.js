@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
 import { useWindowDimensions } from "../../hooks/WindowDimensions"
+import { useProjects } from "../../hooks/documents/ProjectsProvider"
+import ListsProvider from "../../hooks/documents/ListsProvider"
 import Header from "../Header"
 import ProjectLists from "./lists/ProjectLists"
 import Title from "../Title"
-import { useDocuments } from "../../hooks/Documents"
 
 let isPhone, pageTitleFontSize, cardFontSize,
 gap, cardWidth, taskFontSize
@@ -12,6 +13,13 @@ gap, cardWidth, taskFontSize
 const BACKGROUND_COLOR = "#f5f5f7"
 
 export default function Project() {
+  const {
+    currentProject,
+    fetchProject,
+    updateProject,
+    deleteProject
+  } = useProjects()
+  
   const { width, height } = useWindowDimensions()
   const [ searchParams ] = useSearchParams()
   const navigate = useNavigate()
@@ -23,16 +31,9 @@ export default function Project() {
   gap = isPhone ? "3px":"10px"
   taskFontSize = isPhone ? ".9rem":"1rem"
 
-  const { currentProject,
-    fetchProject,
-    updateProject,
-    deleteProject
-  } = useDocuments()
-  
   const [ message, setMessage ] = useState("")
   const [ isEditingTitle, setIsEditingTitle ] = useState(false)
   const [ newTitle, setNewTitle ] = useState("")
-  console.log(message)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,7 +113,10 @@ export default function Project() {
         <div className="d-flex flex-row justify-content-center">
           <Title props={titleProps}></Title>
         </div>
-        <ProjectLists props={projectListsProps} />
+        
+        <ListsProvider>
+          <ProjectLists props={projectListsProps} />
+        </ListsProvider>
       </div>
     </div>
   )

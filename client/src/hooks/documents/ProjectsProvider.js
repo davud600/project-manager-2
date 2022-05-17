@@ -1,22 +1,23 @@
 import { useState,
-  useEffect,
   useContext,
   createContext
 } from "react"
-import { useAuth } from "./Auth"
-import ProjectsServices from "../services/ProjectsSerivces"
+import { useAuth } from "../Auth"
+import ProjectsServices from "../../services/ProjectsServices"
 
-const DocumentsContext = createContext()
+const ProjectsContext = createContext()
 
-export function useDocuments() {
-  return useContext(DocumentsContext)
+export function useProjects() {
+  return useContext(ProjectsContext)
 }
 
-export default function DocumentsProvider({ children }) {
+export default function ProjectsProvider({ children }) {
   const { authorizeUser } = useAuth()
+
+  // Projects
   const [ userProjects, setUserProjects ] = useState([])
   const [ currentProject, setCurrentProject ] = useState({})
-
+  
   // Projects Page
   const fetchProjects = async () => {
     return new Promise(async (resolve, reject) => {
@@ -32,7 +33,6 @@ export default function DocumentsProvider({ children }) {
       }
     })
   }
-
   const createProject = async (userInput) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -62,7 +62,6 @@ export default function DocumentsProvider({ children }) {
       }
     })
   }
-
   const updateProject = async (userInput) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -76,14 +75,13 @@ export default function DocumentsProvider({ children }) {
       }
     })
   }
-
   const deleteProject = async (project_id) => {
     return new Promise(async (resolve, reject) => {
       try {
         await ProjectsServices.deleteProject(project_id)
-        resolve("Edited project info!")
+        resolve("Deleted project!")
       } catch (e) {
-        reject("Could not edit project info!")
+        reject("Could not delete project!")
       }
     })
   }
@@ -92,16 +90,15 @@ export default function DocumentsProvider({ children }) {
     userProjects,
     fetchProjects,
     createProject,
-
     currentProject,
     fetchProject,
     updateProject,
-    deleteProject
+    deleteProject,
   }
   
   return (
-    <DocumentsContext.Provider value={value}>
+    <ProjectsContext.Provider value={value}>
       {children}
-    </DocumentsContext.Provider>
+    </ProjectsContext.Provider>
   )
 }

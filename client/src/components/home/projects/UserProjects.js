@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
+import { useProjects } from "../../../hooks/documents/ProjectsProvider"
 import ProjectCard from "./ProjectCard"
 import CreateDocument from "../../CreateDocument"
-import { useDocuments } from "../../../hooks/Documents"
 
 const cardColor = "#5c5c5d"
 
@@ -13,15 +13,15 @@ export default function UserProjects({ props }) {
     numOfColumns
   } = props
 
-  const { userProjects,
+  const {
+    userProjects,
     fetchProjects,
     createProject
-  } = useDocuments()
+  } = useProjects()
 
   const [ message, setMessage ] = useState("")
   const [ isCreatingProject, setIsCreatingProject ] = useState(false)
   const title = useRef()
-  console.log(message)
 
   useEffect(() => {
     const fetchData = async () => {

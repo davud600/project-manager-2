@@ -1,19 +1,8 @@
-import React, { useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
+import { useSearchParams } from "react-router-dom"
+import { useLists } from "../../../hooks/documents/ListsProvider"
 import ListCard from "./ListCard"
 import CreateDocument from "../../CreateDocument"
-
-const lists = [
-  {
-    _id: "00123456789",
-    title: "project kill john lennon list 1",
-    project_id: "123456789"
-  },
-  {
-    _id: "00123456788",
-    title: "project kill john lennon list 2",
-    project_id: "123456789"
-  }
-]
 
 const CARD_COLOR = "grey"
 
@@ -25,21 +14,48 @@ export default function ProjectLists({ props }) {
     taskFontSize
   } = props
 
+  const {
+    projectLists,
+    fetchLists,
+    createList
+  } = useLists()
+
+  const [ searchParams ] = useSearchParams()
+  const [ message, setMessage ] = useState("")
   const [ isCreatingList, setIsCreatingList ]= useState(false)
   const title = useRef()
 
-  const addList = (e = null) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchLists(searchParams.get("project_id"))
+    }
+
+    fetchData()
+  }, [])
+
+  const addList = async (e = null) => {
     if (e !== null && e.key !== "Enter")
       return
     
     setIsCreatingList(false)
     // Add list
+    try {
+      setMessage(await createList({
+        project_id: searchParams.get("project_id"),
+        title: title.current.value
+      }))
+
+      await fetchLists(searchParams.get("project_id"))
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const listCardProps = {
     cardFontSize: cardFontSize,
     cardWidth: cardWidth,
-    taskFontSize: taskFontSize
+    taskFontSize: taskFontSize,
+    refreshLists: () => fetchLists(searchParams.get("project_id"))
   }
   const createCardProps = {
     addDocument: addList,
@@ -79,19 +95,25 @@ export default function ProjectLists({ props }) {
         height: "27rem"
       }}
     >
-      {lists.map((list, index) => {
-        return index !== lists.length - 1 ? (
+      {projectLists.map((list, index) => {
+        return index !== projectLists.length - 1 ? (
           <ListCard key={list._id}
+            list={list}
             props={listCardProps}
           />
         ):
         (
           <React.Fragment key={list._id} >
-            <ListCard props={listCardProps} />
+            <ListCard list={list}
+              props={listCardProps}
+            />
             <CreateDocument props={createCardProps} />
           </React.Fragment>
         )
       })}
+      {projectLists.length === 0 ?
+      <CreateDocument props={createCardProps} />
+      :<></>}
     </div>
   )
 }

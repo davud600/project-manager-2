@@ -19,7 +19,7 @@ export default function Title({ props }) {
 
   const titleRef = useRef()
   useOutsideAlerter(titleRef, setIsEditingTitle, false, setNewTitle, title)
-
+  
   useEffect(() => {
     setNewTitle(title)
   }, [title])

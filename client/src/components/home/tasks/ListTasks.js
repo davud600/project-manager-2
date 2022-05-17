@@ -1,40 +1,54 @@
-import React, { useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
+import { useTasks } from "../../../hooks/documents/TasksProvider"
 import TaskCard from "./TaskCard"
 import CreateDocument from "../../CreateDocument"
 
-const tasks = [
-  {
-    _id: "000123456789",
-    title: "project kill john lennon task 1",
-    list_id: "00123456789"
-  },
-  {
-    _id: "000123456788",
-    title: "project kill john lennon task 2",
-    list_id: "00123456788"
-  }
-]
-
 const CARD_COLOR = "#ababab"
 
-export default function ListTasks({ props }) {
+export default function ListTasks({ props, list_id }) {
   const {
     taskFontSize
   } = props
 
+  const {
+    listTasks,
+    fetchTasks,
+    createTask
+  } = useTasks()
+
+  const [ message, setMessage ] = useState("")
   const [ isCreatingTask, setIsCreatingTask ]= useState(false)
   const title = useRef()
 
-  const addTask = (e = null) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchTasks(list_id)
+    }
+
+    fetchData()
+  }, [])
+
+  const addTask = async (e = null) => {
     if (e !== null && e.key !== "Enter")
       return
 
     setIsCreatingTask(false)
     // Add task
+    try {
+      setMessage(await createTask({
+        list_id: list_id,
+        description: title.current.value
+      }))
+
+      await fetchTasks(list_id)
+    } catch (e) {
+      setMessage(e)
+    }
   }
-  
+
   const taskCardProps = {
-    taskFontSize: taskFontSize
+    taskFontSize: taskFontSize,
+    refreshTasks: () => fetchTasks(list_id)
   }
   const createCardProps = {
     addDocument: addTask,
@@ -72,19 +86,25 @@ export default function ListTasks({ props }) {
         maxHeight: "23rem"
       }}
     >
-      {tasks.map((task, index) => {
-        return index !== tasks.length - 1 ? (
+      {listTasks.map((task, index) => {
+        return index !== listTasks.length - 1 ? (
           <TaskCard key={task._id}
             props={taskCardProps}
+            task={task}
           />
         ):
         (
           <React.Fragment key={task._id} >
-            <TaskCard props={taskCardProps} />
+            <TaskCard props={taskCardProps}
+              task={task}
+            />
             <CreateDocument props={createCardProps} />
           </React.Fragment>
         )
       })}
+      {listTasks.length === 0 ?
+      <CreateDocument props={createCardProps} />
+      :<></>}
     </div>
   )
 }

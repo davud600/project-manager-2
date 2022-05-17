@@ -1,24 +1,49 @@
 import { useState } from "react"
+import { useTasks } from "../../../hooks/documents/TasksProvider"
 import Title from "../../Title"
 
-export default function TaskCard({ props }) {
+export default function TaskCard({ props, task }) {
   const {
-    taskFontSize
+    taskFontSize,
+    refreshTasks
   } = props
   const CARD_COLOR = "white"
 
-  const [ isEditingTitle, setIsEditingTitle ] = useState(false)
-  const [ newTitle, setNewTitle ] = useState("TaskCard")
+  const {
+    updateTask,
+    deleteTask
+  } = useTasks()
 
-  const editTitle = (e) => {
+  const [ message, setMessage ] = useState("")
+  const [ isEditingTitle, setIsEditingTitle ] = useState(false)
+  const [ newTitle, setNewTitle ] = useState("")
+
+  const editTitle = async (e) => {
     if (e.key !== "Enter")
       return
     
     setIsEditingTitle(false)
     // Edit title
+    try {
+      setMessage(await updateTask({
+        description: newTitle
+      }, task._id))
+
+      await refreshTasks()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
-  const deleteTask = () => {
+  const removeTask = async () => {
+    // Delete document
+    try {
+      setMessage(await deleteTask(task._id))
+
+      await refreshTasks()
+    } catch (e) {
+      setMessage(e)
+    }
   }
 
   const titleProps = {
@@ -28,7 +53,7 @@ export default function TaskCard({ props }) {
     titleStyle: {
       fontSize: taskFontSize
     },
-    title: "TaskCard",
+    title: task.description,
     newTitle: newTitle,
     setNewTitle: setNewTitle,
     editTitle: editTitle,
@@ -38,7 +63,7 @@ export default function TaskCard({ props }) {
       backgroundColor: "white",
       opacity: "0.5"
     },
-    deleteDocument: deleteTask
+    deleteDocument: removeTask
   }
 
   return (
