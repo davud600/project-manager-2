@@ -2,6 +2,8 @@ import { useWindowDimensions } from "../../hooks/WindowDimensions"
 import Header from "../Header"
 import UserProjects from "./projects/UserProjects"
 
+const BACKGROUND_COLOR = "#f5f5f7"
+
 let isPhone, contentWidth,
 pageTitleFontSize, cardFontSize,
 gap, cardTextMarginLeft, numOfColumns
@@ -26,7 +28,7 @@ export default function Dashboard() {
 
   return (
     <div style={{
-      backgroundColor: "#f5f5f7",
+      backgroundColor: BACKGROUND_COLOR,
       height: height
     }}>
       <Header />

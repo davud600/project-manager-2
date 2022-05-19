@@ -111,7 +111,9 @@ export default function Project() {
       <Header />
       <div className="d-flex flex-column">
         <div className="d-flex flex-row justify-content-center">
+          {currentProject ?
           <Title props={titleProps}></Title>
+          :<></>}
         </div>
         
         <ListsProvider>
