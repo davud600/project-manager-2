@@ -4,6 +4,8 @@ import { useState,
 } from "react"
 import { useAuth } from "../Auth"
 import ProjectsServices from "../../services/ProjectsServices"
+import ListsServices from "../../services/ListsServices"
+import TasksServices from "../../services/TasksServices"
 
 const ProjectsContext = createContext()
 
@@ -78,11 +80,57 @@ export default function ProjectsProvider({ children }) {
   const deleteProject = async (project_id) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // Delete children and grandchildren
+        await deleteChildrenOfObject({
+          object_id: project_id,
+          has_grand_children: true,
+          getChildren: ListsServices.getLists,
+          deleteChild: ListsServices.deleteList
+        })
+
+        // Delete the project
         await ProjectsServices.deleteProject(project_id)
         resolve("Deleted project!")
       } catch (e) {
         reject("Could not delete project!")
       }
+    })
+  }
+
+  async function deleteChildrenOfObject(props) {
+    const {
+      object_id,
+      has_grand_children,
+      getChildren,
+      deleteChild
+    } = props
+
+    return new Promise(async resolve => {
+      // get all children of object
+      const res = await getChildren(object_id)
+      const children_of_object = await res.data.lists || await res.data.tasks
+
+      // delete all those children
+      if (has_grand_children) {
+        // if has grand children delete them first
+        await Promise.all(
+          children_of_object.map(async child => {
+            await deleteChildrenOfObject({
+              object_id: child._id,
+              has_grand_children: false,
+              getChildren: TasksServices.getTasks,
+              deleteChild: TasksServices.deleteTask
+            })
+          })
+        )
+      }
+      await Promise.all(
+        children_of_object.map(async child => {
+          await deleteChild(child._id)
+        })
+      )
+
+      resolve()
     })
   }
   
