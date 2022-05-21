@@ -8,7 +8,8 @@ import ProjectLists from "./lists/ProjectLists"
 import Title from "../Title"
 
 let isPhone, pageTitleFontSize, cardFontSize,
-gap, cardWidth, taskFontSize
+gap, cardWidth, taskFontSize, titlePadding,
+deleteButtonFontSize
 
 const BACKGROUND_COLOR = "#f5f5f7"
 
@@ -30,6 +31,8 @@ export default function Project() {
   cardWidth = isPhone ? "15rem":"19.25rem"
   gap = isPhone ? "3px":"10px"
   taskFontSize = isPhone ? ".9rem":"1rem"
+  titlePadding = isPhone ? "0 3rem":"0 6rem"
+  deleteButtonFontSize = isPhone ? "0.8rem":"1rem"
 
   const [ message, setMessage ] = useState("")
   const [ isEditingTitle, setIsEditingTitle ] = useState(false)
@@ -86,7 +89,7 @@ export default function Project() {
       cursor: "pointer",
       backgroundColor: BACKGROUND_COLOR,
       minWidth: "fit-content",
-      padding: "0 6.25rem"
+      padding: titlePadding
     },
     title: currentProject.title,
     newTitle: newTitle,
@@ -99,8 +102,7 @@ export default function Project() {
       opacity: "0.5",
       minWidth: "fit-content"
     },
-    centered: true,
-    deleteDocument: removeProject
+    centered: true
   }
 
   return (
@@ -112,7 +114,17 @@ export default function Project() {
       <div className="d-flex flex-column">
         <div className="d-flex flex-row justify-content-center">
           {currentProject ?
-          <Title props={titleProps}></Title>
+          <div className="d-flex flex-row">
+            <Title props={titleProps}></Title>
+            <a className="btn btn-link p-0"
+              style={{
+                marginTop: "2.25rem",
+                color: "red",
+                fontSize: deleteButtonFontSize
+              }}
+              onClick={removeProject}
+            >Delete</a>
+          </div>
           :<></>}
         </div>
         

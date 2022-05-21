@@ -37,6 +37,7 @@ export default function ListsProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await ListsServices.createList(userInput)
         resolve("Added new llist!")
       } catch (e) {
@@ -50,6 +51,7 @@ export default function ListsProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await ListsServices.updateList(list_id, userInput)
         resolve("Edited list info!")
       } catch (e) {
@@ -60,6 +62,8 @@ export default function ListsProvider({ children }) {
   const deleteList = async (list_id) => {
     return new Promise(async (resolve, reject) => {
       try {
+        await authorizeUser()
+
         // Delete children
         await deleteChildrenOfObject({
           object_id: list_id,

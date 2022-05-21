@@ -13,8 +13,7 @@ export default function Title({ props }) {
     editTitle,
     inputClassName,
     inputStyle,
-    centered = false,
-    deleteDocument
+    centered = false
   } = props
 
   const titleRef = useRef()
@@ -32,16 +31,6 @@ export default function Title({ props }) {
         onClick={() => setIsEditingTitle(true)}
       >
         {title}
-        <button className="btn p-0"
-          style={{
-            marginTop: ".275rem",
-            width: "1rem",
-            height: "1rem",
-            backgroundColor: "#bfafae",
-            opacity: "0.5"
-          }}
-          onClick={deleteDocument}
-        ></button>
       </p>:
       <input className={inputClassName}
         style={inputStyle}

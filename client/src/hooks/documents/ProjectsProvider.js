@@ -41,6 +41,7 @@ export default function ProjectsProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await ProjectsServices.createProject(userInput)
         resolve("Added new project!")
       } catch (e) {
@@ -70,6 +71,7 @@ export default function ProjectsProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await ProjectsServices.updateProject(currentProject._id, userInput)
         resolve("Edited project info!")
       } catch (e) {
@@ -80,6 +82,8 @@ export default function ProjectsProvider({ children }) {
   const deleteProject = async (project_id) => {
     return new Promise(async (resolve, reject) => {
       try {
+        await authorizeUser()
+
         // Delete children and grandchildren
         await deleteChildrenOfObject({
           object_id: project_id,

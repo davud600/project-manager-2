@@ -36,6 +36,7 @@ export default function TasksProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await TasksServices.createTask(userInput)
         resolve("Added new task!")
       } catch (e) {
@@ -49,6 +50,7 @@ export default function TasksProvider({ children }) {
         if (userInput.title === "")
           return reject("Invalid inputs!")
 
+        await authorizeUser()
         await TasksServices.updateTask(task_id, userInput)
         resolve("Edited task info!")
       } catch (e) {
@@ -59,6 +61,7 @@ export default function TasksProvider({ children }) {
   const deleteTask = async (task_id) => {
     return new Promise(async (resolve, reject) => {
       try {
+        await authorizeUser()
         await TasksServices.deleteTask(task_id)
         resolve("Deleted task!")
       } catch (e) {
